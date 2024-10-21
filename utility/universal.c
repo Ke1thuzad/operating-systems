@@ -1,0 +1,59 @@
+#include "universal.h"
+
+char seek_char(int fd) {
+    char cur = getchr_fd(fd);
+    while(cur != -1) {
+        cur = getchr_fd(fd);
+        if (cur > ' ') {
+            return cur;
+        }
+    }
+    return -1;
+}
+
+int len(const char *str) {
+    int i = 0;
+    while(str[i++] != '\0');
+    return i;
+}
+
+char getchr() {
+    char ch;
+    read(STDIN_FILENO, &ch, sizeof(char));
+    return ch;
+}
+
+char getchr_fd(int fd) {
+    char ch;
+    read(fd, &ch, sizeof(char));
+    return ch;
+}
+
+void print(char *str) {
+    write(STDOUT_FILENO, str, len(str));
+}
+
+int chrtoint(char x, int* num) {
+    int a = x - '0';
+    if (a < 0 || a > 9) return 1;
+    *num = a;
+    return 0;
+}
+
+int parse_int(char* str, int* res) {
+    int i = 0, result = 0, sign = 1;
+
+    if (str[0] == '-') i++, sign = -1;
+
+    while (str[i] != '\0') {
+        int temp, err = chrtoint(str[i], &temp);
+        if (err)
+            return err;
+        result *= 10;
+        result += temp;
+        i++;
+    }
+
+    *res = sign * result;
+    return 0;
+}
