@@ -67,12 +67,12 @@ void destroy(Array* arr) {
 //    return 0;
 //}
 //
-//void print_arr(const Array arr) {
-//    for (int i = 0; i < arr.length; ++i) {
-//        printf("%c ", arr.val[i]);
-//    }
-//    printf("\n");
-//}
+void print_arr(const Array arr) {
+    for (int i = 0; i < arr.length; ++i) {
+        printf("%c ", arr.val[i]);
+    }
+    printf("\n");
+}
 //
 //void reverse_print_arr(const Array arr) {
 //    for (int i = arr.length - 1; i >= 0; --i) {

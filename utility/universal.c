@@ -2,11 +2,11 @@
 
 char seek_char(int fd) {
     char cur = getchr_fd(fd);
-    while(cur != -1) {
-        cur = getchr_fd(fd);
+    while(cur > 0) {
         if (cur > ' ') {
             return cur;
         }
+        cur = getchr_fd(fd);
     }
     return -1;
 }

@@ -9,17 +9,33 @@ int main() {
         nread_value(STDIN_FILENO, str, 15, ch);
         parse_int(str, &val);
         sum += val;
-        if (i == 3) {
+        if (i % 3 == 0) {
             int j = 0;
             char buf[15];
-            while (val > 0) {
-                buf[j++] = val % 10 + '0';
-                val /= 10;
+            while (sum > 0) {
+                buf[j++] = sum % 10 + '0';
+                sum /= 10;
             }
+            buf[j] = '\0';
             print(buf);
             sum = 0;
         }
         ch = seek_char(STDIN_FILENO);
+    }
+
+    return 0;
+}
+
+int nread_value(int fd, char* result, int n, char first) {
+    int i = 0;
+    if (first)
+        result[i++] = first;
+
+    char character = getchr_fd(fd);
+    for (; i < n; ++i) {
+        if (character <= ' ')
+            return 0;
+        result[i] = character;
     }
 
     return 0;
