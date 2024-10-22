@@ -11,10 +11,24 @@ char seek_char(int fd) {
     return -1;
 }
 
+char seek_char_nl(int fd) {
+//    *is_newline = 0;
+    char cur = getchr_fd(fd);
+    while(cur > 0) {
+        if (cur == '\n' || cur > ' ') {
+//            if (cur == '\n')
+//                *is_newline = 1;
+            return cur;
+        }
+        cur = getchr_fd(fd);
+    }
+    return -1;
+}
+
 int len(const char *str) {
     int i = 0;
-    while(str[i++] != '\0');
-    return i;
+    while(str[i++] > 0);
+    return i - 1;
 }
 
 char getchr() {
@@ -56,4 +70,10 @@ int parse_int(char* str, int* res) {
 
     *res = sign * result;
     return 0;
+}
+
+int absolute(int x) {
+    if (x < 0)
+        return -x;
+    return x;
 }

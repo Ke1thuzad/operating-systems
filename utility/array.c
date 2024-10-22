@@ -68,10 +68,11 @@ void destroy(Array* arr) {
 //}
 //
 void print_arr(const Array arr) {
-    for (int i = 0; i < arr.length; ++i) {
-        printf("%c ", arr.val[i]);
-    }
-    printf("\n");
+//    for (int i = 0; i < arr.length; ++i) {
+//        print(arr.val);
+//    }
+    print(arr.val);
+    print("\n");
 }
 //
 //void reverse_print_arr(const Array arr) {

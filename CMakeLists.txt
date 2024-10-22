@@ -11,7 +11,7 @@ add_executable(lab1 lab1/main.c lab1/main.h
         utility/universal.h
         utility/universal.c)
 
-add_executable(lab1child lab1/child.c lab1/main.h
+add_executable(child lab1/child.c lab1/main.h
         utility/array.c
         utility/array.h
         utility/error_handler.c
