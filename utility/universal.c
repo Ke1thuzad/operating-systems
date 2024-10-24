@@ -12,12 +12,9 @@ char seek_char(int fd) {
 }
 
 char seek_char_nl(int fd) {
-//    *is_newline = 0;
     char cur = getchr_fd(fd);
     while(cur > 0) {
         if (cur == '\n' || cur > ' ') {
-//            if (cur == '\n')
-//                *is_newline = 1;
             return cur;
         }
         cur = getchr_fd(fd);
