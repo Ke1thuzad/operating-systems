@@ -18,3 +18,9 @@ add_executable(child lab1/child.c lab1/main.h
         utility/error_handler.h
         utility/universal.h
         utility/universal.c)
+
+set(CMAKE_C_FLAGS -fsanitize=thread)
+
+add_executable(lab2 lab2/main.c lab2/main.h
+        utility/error_handler.c
+        utility/error_handler.h)

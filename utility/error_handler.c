@@ -1,5 +1,11 @@
 #include "error_handler.h"
 
+int len(const char *str) {
+    int i = 0;
+    while(str[i++] > 0);
+    return i - 1;
+}
+
 int throw_err(errcode err) {
     char* err_msg;
     switch(err) {
