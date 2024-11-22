@@ -4,7 +4,7 @@ int main(int argc, char **argv) {
     if (argc != 2)
         return throw_err(INCORRECT_ARGUMENTS);
 
-    int A_size = 3;
+    int A_size = 1000000;
 
     int A[A_size];
 
