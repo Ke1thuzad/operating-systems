@@ -1,10 +1,12 @@
 #include "error_handler.h"
 
+#ifndef OPERATIONAL_SYSTEMS_UNIVERSAL_H
 int len(const char *str) {
     int i = 0;
     while(str[i++] > 0);
     return i - 1;
 }
+#endif
 
 int throw_err(errcode err) {
     char* err_msg;
@@ -32,6 +34,9 @@ int throw_err(errcode err) {
             break;
         case FORK_ERROR:
             err_msg = "Failed to fork a process.";
+            break;
+        case SHARED_MEMORY_ERROR:
+            err_msg = "Failed to share memory.";
             break;
         default:
             err_msg = "An unknown message has occurred.";

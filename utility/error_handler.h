@@ -11,7 +11,8 @@ typedef enum errcode {
     MEMORY_NOT_ALLOCATED,
     FILE_ERROR,
     PIPE_ERROR,
-    FORK_ERROR
+    FORK_ERROR,
+    SHARED_MEMORY_ERROR
 } errcode;
 
 int throw_err(errcode err);

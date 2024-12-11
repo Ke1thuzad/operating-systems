@@ -13,12 +13,14 @@ char seek_char(int fd) {
 
 char seek_char_nl(int fd) {
     char cur = getchr_fd(fd);
+
     while(cur > 0) {
         if (cur == '\n' || cur > ' ') {
             return cur;
         }
         cur = getchr_fd(fd);
     }
+
     return -1;
 }
 
@@ -56,7 +58,7 @@ int parse_int(char* str, int* res) {
 
     if (str[0] == '-') i++, sign = -1;
 
-    while (str[i] != '\0') {
+    while (str[i] > 0) {
         int temp, err = chrtoint(str[i], &temp);
         if (err)
             return err;
