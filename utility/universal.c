@@ -1,24 +1,30 @@
 #include "universal.h"
 
 char seek_char(int fd) {
-    char cur = getchr_fd(fd);
-    while(cur > 0) {
+    char cur;
+    ssize_t bytes_read;
+    while ((bytes_read = read(fd, &cur, sizeof(char))) > 0) {
         if (cur > ' ') {
             return cur;
         }
-        cur = getchr_fd(fd);
+    }
+    if (bytes_read == 0 || bytes_read == -1) {
+        return -1;
     }
     return -1;
 }
 
 char seek_char_nl(int fd) {
-    char cur = getchr_fd(fd);
-
-    while(cur > 0) {
+    char cur;
+    ssize_t bytes_read;
+    while ((bytes_read = read(fd, &cur, sizeof(char))) > 0) {
         if (cur == '\n' || cur > ' ') {
             return cur;
         }
-        cur = getchr_fd(fd);
+    }
+
+    if (bytes_read == 0 || bytes_read == -1) {
+        return -1;
     }
 
     return -1;
@@ -26,19 +32,33 @@ char seek_char_nl(int fd) {
 
 int len(const char *str) {
     int i = 0;
-    while(str[i++] > 0);
-    return i - 1;
+
+    while (str[i] != '\0') {
+        i++;
+    }
+
+    return i;
 }
 
 char getchr() {
     char ch;
-    read(STDIN_FILENO, &ch, sizeof(char));
+    ssize_t bytes_read = read(STDIN_FILENO, &ch, sizeof(char));
+
+    if (bytes_read <= 0) {
+        return -1;
+    }
+
     return ch;
 }
 
 char getchr_fd(int fd) {
     char ch;
-    read(fd, &ch, sizeof(char));
+    ssize_t bytes_read = read(fd, &ch, sizeof(char));
+
+    if (bytes_read <= 0) {
+        return -1;
+    }
+
     return ch;
 }
 
