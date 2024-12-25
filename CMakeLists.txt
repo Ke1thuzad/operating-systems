@@ -38,9 +38,12 @@ add_executable(lab3child lab3/child.c lab3/main.h
         utility/universal.c)
 
 
-add_library(buddy_alloc SHARED lab4/buddy.c lab4/buddy.h)
-add_library(mkk_alloc SHARED lab4/mkk.c lab4/mkk.h)
+add_library(buddy_alloc SHARED lab4/allocators/buddy.c lab4/allocators/buddy.h)
+add_library(mkk_alloc SHARED lab4/allocators/mkk.c lab4/allocators/mkk.h)
+add_library(emergency SHARED lab4/allocators/emergency.c lab4/allocators/emergency.h)
 
 add_executable(lab4 lab4/main.c lab4/main.h)
 
-target_link_libraries(lab4 PRIVATE buddy_alloc PRIVATE mkk_alloc)
+target_link_libraries(lab4 PRIVATE buddy_alloc
+        PRIVATE mkk_alloc
+        PRIVATE emergency)
