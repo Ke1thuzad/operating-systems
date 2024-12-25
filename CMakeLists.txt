@@ -36,3 +36,11 @@ add_executable(lab3child lab3/child.c lab3/main.h
         utility/error_handler.h
         utility/universal.h
         utility/universal.c)
+
+
+add_library(buddy_alloc SHARED lab4/buddy.c lab4/buddy.h)
+add_library(mkk_alloc SHARED lab4/mkk.c lab4/mkk.h)
+
+add_executable(lab4 lab4/main.c lab4/main.h)
+
+target_link_libraries(lab4 PRIVATE buddy_alloc PRIVATE mkk_alloc)
