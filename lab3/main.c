@@ -21,7 +21,6 @@ int main(int argc, char** argv) {
         return throw_err(SHARED_MEMORY_ERROR);
     }
 
-
     char *shared_mem = mmap(NULL, SHARED_MEM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
     if (shared_mem == MAP_FAILED) {
         shm_unlink(SHARED_MEM_NAME);
@@ -39,43 +38,38 @@ int main(int argc, char** argv) {
         int inpfd = open(filename.val, O_RDONLY);
         destroy(&filename);
         if (inpfd == -1) {
-            exit(1);
-            return throw_err(FILE_ERROR);
+            exit(FILE_ERROR);
         }
 
         dup2(inpfd, STDIN_FILENO);
-
         close(inpfd);
 
         char* args[] = {"./child", NULL};
-        if (execvp(args[0], args)) {
-            exit(1);
-            return throw_err(FORK_ERROR);
+        if (execvp(args[0], args) == -1) {
+            exit(FORK_ERROR);
         }
+    } else {
+        int status;
+        waitpid(pid, &status, 0);
+
+        print(shared_mem);
+
+        close(shm_fd);
+        shm_unlink(SHARED_MEM_NAME);
+        munmap(shared_mem, SHARED_MEM_SIZE);
+        destroy(&filename);
     }
 
-    int status;
-    waitpid(pid, &status, 0);
-
-    print(shared_mem);
-
-    close(shm_fd);
-    shm_unlink(SHARED_MEM_NAME);
-    munmap(shared_mem, SHARED_MEM_SIZE);
-    destroy(&filename);
-
-    exit(1);
-
+    exit(0);
 }
 
 int read_value(int fd, Array* result, char first) {
-    if (first)
+    if (first != -1)
         append(result, first);
 
-    char character = getchr_fd(fd);
-    while (character > ' ') {
-        append(result, (char)character);
-        character = getchr_fd(fd);
+    char character;
+    while ((character = getchr_fd(fd)) > ' ') {
+        append(result, character);
     }
 
     return 0;

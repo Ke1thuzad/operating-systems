@@ -4,14 +4,14 @@ int main(int argc, char **argv) {
     if (argc != 2)
         return throw_err(INCORRECT_ARGUMENTS);
 
-    int A_size = 1000000;
+    int A_size = 2050000;
 
     int A[A_size];
 
     srand(time(NULL));
 
     for (int i = 0; i < A_size; ++i) {
-        A[i] = rand() % 1000000 + 1000;
+        A[i] = rand() % 1000000 - 500000;
     }
 
     int thread_count = atoi(argv[1]);

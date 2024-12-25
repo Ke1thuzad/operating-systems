@@ -6,7 +6,7 @@
 int main() {
     int shm_fd = shm_open(SHARED_MEM_NAME, O_RDWR, 0666);
     if (shm_fd == -1) {
-        return 1;
+        exit(1);
     }
 
     char *shared_memory = mmap(NULL, SHARED_MEM_SIZE,
@@ -14,7 +14,7 @@ int main() {
                                MAP_SHARED, shm_fd, 0);
 
     if (shared_memory == MAP_FAILED) {
-        return 1;
+        exit(1);
     }
 
     char ch = seek_char(STDIN_FILENO);
@@ -23,21 +23,22 @@ int main() {
     int nl = 0;
     int write_pos = 0;
 
-    while (ch > 0) {
+    while (ch != -1) {
         if (nl || ch == '\n') {
             if (i > 0) {
                 int j = 0, sign = 1;
-                char buf[16] = "0";
+                char buf[16] = "";
 
                 if (sum < 0) {
                     sum *= -1;
                     sign = -1;
                 }
 
-                while (sum > 0) {
+                do {
                     buf[j++] = sum % 10 + '0';
                     sum /= 10;
-                }
+                } while (sum > 0);
+
                 if (j == 0) j++;
                 buf[j] = '\0';
 
@@ -64,7 +65,7 @@ int main() {
             nl = 0;
         } else {
             i++;
-            if (nread_value(STDIN_FILENO, str, 15, ch, &nl) == EOF)
+            if (nread_value(STDIN_FILENO, str, 15, ch, &nl) == -1)
                 break;
             parse_int(str, &val);
             sum += val;
@@ -87,23 +88,22 @@ int main() {
 int nread_value(int fd, char *result, int n, char first, int *is_newline) {
     *is_newline = 0;
     int i = 0;
-    if (first)
+    if (first != -1)
         result[i++] = first;
 
-    char character = getchr_fd(fd);
+    char character;
     for (; i < n; ++i) {
+        character = getchr_fd(fd);
+        if (character == -1)
+            return -1;
         if (character <= ' ') {
-            if (character <= 0)
-                return -1;
             result[i] = '\0';
             if (character == '\n')
                 *is_newline = 1;
             return 0;
         }
         result[i] = character;
-        character = getchr_fd(fd);
     }
     result[i] = '\0';
-
     return 0;
 }
